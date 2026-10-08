@@ -1,0 +1,15 @@
+[
+    {
+        "name": "modbus",
+        "label": "Modbus",
+        "category": [
+            "OT & IoT Security"
+        ],
+        "description": "Modbus connector integrates the Python Library pymodbus. \nWith this connector you can interact with OT devices supporting Modbus.\nIt implements:\nREAD_COILS (0x01)=Func01\nREAD_DISCRETE_INPUTS (0x02)=Func02\nREAD_HOLDING_REGISTERS (0x03)=Func03\nREAD_INPUT_REGISTERS (0x04)=Func4\nWRITE_SINGLE_COIL (0x05)=Func05\nWRITE_SINGLE_REGISTER (0x06)=Func06\nWRITE_MULTIPLE_COILS (0x0F)=Func15\nWRITE_MULTIPLE_REGISTERS (0x10)=Func16\nWRITE_READ_MULTIPLE_REGISTERS (0x17)=Func23\nRead Device Information (0x2B\/0x0E)=Func43\n\nbut also tools like:\nScan a Modbus device for slave devices\nConvert registers to string\nConvert registers to int32",
+        "publisher": "ArnaudN",
+        "version": "1.0.0",
+        "operation_roles": [],
+        "configurations": [],
+        "dataImports": []
+    }
+]
