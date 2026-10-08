@@ -1,0 +1,15 @@
+{
+    "ASSETS": {
+        "MODULE_DETAILS": {
+            "SINGULAR_NAME": "Asset",
+            "PLURAL_NAME": "Assets"
+        },
+        "FIELDS": {
+            "MODBUSORIGIN": "Modbus Origin",
+            "MODBUSSN": "Modbus SN",
+            "MODBUSMODEL": "Modbus Model",
+            "MODBUSMANUFACTURER": "Modbus Manufacturer",
+            "MODBUSTCPPORT": "Modbus TCP Port"
+        }
+    }
+}
