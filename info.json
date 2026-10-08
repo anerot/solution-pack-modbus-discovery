@@ -1,0 +1,51 @@
+{
+    "name": "modbusDiscovery",
+    "version": "1.0.0",
+    "fsrMinCompatibility": "7.2.0",
+    "type": "solutionpack",
+    "local": true,
+    "label": "Modbus Discovery",
+    "dependencies": [],
+    "prerequisite": "A mock ouput is available into the playbooks for DEMO purpose.\nEdit the Playbooks Configuration step to modify the \"useMockOutput\" to True if needed.",
+    "publisher": "Arnaudn",
+    "description": "This Solution Pack provides Playbooks related to Modbus assets.\nIt performs a network scan to discover the Modbus assets connected or attached behind a Modbus gateway and create them in Asset module.\nIt raises an Alert when new Assets are discovered.\nIt enrich your Modbus Asset based on the Modbus function : Read Device Information",
+    "help": null,
+    "category": [
+        "OT & IoT Security"
+    ],
+    "supportInfo": "Fortinet Customer Support",
+    "iconLarge": null,
+    "postInstallConfig": null,
+    "date": "2026-10-07T17:45:43+00:00",
+    "contents": {
+        "modules": {
+            "": {
+                "name": "Assets",
+                "apiName": "assets"
+            }
+        },
+        "viewTemplates": {
+            "assets": {
+                "name": "Assets",
+                "apiName": "assets",
+                "views": [
+                    "form",
+                    "list",
+                    "detail"
+                ]
+            }
+        },
+        "playbooks": [
+            {
+                "name": "10 - SP - Modbus Discovery"
+            }
+        ],
+        "connectors": [
+            {
+                "name": "Modbus",
+                "apiName": "modbus",
+                "version": "1.0.0"
+            }
+        ]
+    }
+}
