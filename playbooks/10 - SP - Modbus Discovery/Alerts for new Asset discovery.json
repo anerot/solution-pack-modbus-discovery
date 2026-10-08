@@ -1,0 +1,135 @@
+{
+    "@type": "Workflow",
+    "triggerLimit": null,
+    "name": "Alerts for new Asset discovery",
+    "aliasName": null,
+    "tag": null,
+    "description": "This Playbook creates an Alert when a new OT Asset is discovered via the Scan Playbook",
+    "isActive": false,
+    "debug": true,
+    "singleRecordExecution": false,
+    "remoteExecutableFlag": false,
+    "parameters": [],
+    "synchronous": false,
+    "collection": "\/api\/3\/workflow_collections\/0222ccc7-2129-40c7-ad68-da62759de47e",
+    "versions": [],
+    "triggerStep": "\/api\/3\/workflow_steps\/25c64d43-ed48-4f82-8c25-d713e8a2ff08",
+    "steps": [
+        {
+            "@type": "WorkflowStep",
+            "name": "Create Alert",
+            "description": null,
+            "arguments": {
+                "resource": {
+                    "name": "New Modbus Device Detected",
+                    "type": "\/api\/3\/picklists\/574a6ee2-7265-4701-815e-cff83b053bce",
+                    "state": "\/api\/3\/picklists\/a1bac09b-1441-45aa-ad1b-c88744e48e72",
+                    "assets": "{{vars.input.records[0]['@id']}}",
+                    "source": "FortiSOAR Modbus Scan",
+                    "status": "\/api\/3\/picklists\/7de816ff-7140-4ee5-bd05-93ce22002146",
+                    "severity": "\/api\/3\/picklists\/b3c20a3a-ecfd-4adc-a225-0205968e6793",
+                    "__replace": "",
+                    "aIVerdict": "\/api\/3\/picklists\/210a0158-3748-47fa-81f9-e5deee715783",
+                    "deviceType": "\/api\/3\/picklists\/925104c4-9c7a-48fd-be71-74fe85c55f69",
+                    "description": "FortiSOAR discovered a new Modbus Device in your Network\nIP Address: {{vars.input.records[0].ip}}\nPort: {{vars.input.records[0].modbusTCPPort}}\nUnitID: {{vars.input.records[0].modbusUnitID}}",
+                    "ackSlaStatus": "\/api\/3\/picklists\/72979f64-e8b9-4888-a965-957e0ec24818",
+                    "hostIPAddress": "{{vars.input.records[0].ip}}",
+                    "respSlaStatus": "\/api\/3\/picklists\/72979f64-e8b9-4888-a965-957e0ec24818",
+                    "priorityWeight": 1,
+                    "alertDetectionDate": "{{arrow.utcnow().int_timestamp}}",
+                    "escalatedtoincident": "\/api\/3\/picklists\/2128a09c-153d-4db3-985d-de6be33deae5",
+                    "resolvedAutomatedly": false,
+                    "alertRemainingAckSLA": 0
+                },
+                "operation": "Overwrite",
+                "collection": "\/api\/3\/alerts",
+                "__recommend": [],
+                "fieldOperation": [],
+                "step_variables": []
+            },
+            "status": null,
+            "top": "165",
+            "left": "125",
+            "stepType": "\/api\/3\/workflow_step_types\/2597053c-e718-44b4-8394-4d40fe26d357",
+            "group": null,
+            "uuid": "bc5f7a04-acfa-44ce-bdd5-e4e863650a73"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Start",
+            "description": null,
+            "arguments": {
+                "resource": "assets",
+                "resources": [
+                    "assets"
+                ],
+                "__triggerLimit": true,
+                "step_variables": {
+                    "input": {
+                        "params": [],
+                        "records": [
+                            "{{vars.input.records[0]}}"
+                        ]
+                    }
+                },
+                "triggerOnSource": true,
+                "fieldbasedtrigger": {
+                    "sort": [],
+                    "limit": 30,
+                    "logic": "AND",
+                    "filters": [
+                        {
+                            "type": "object",
+                            "field": "assetType",
+                            "value": "\/api\/3\/picklists\/f36137a5-aa8f-4532-aab5-e57a8d7420a1",
+                            "_value": {
+                                "@id": "\/api\/3\/picklists\/f36137a5-aa8f-4532-aab5-e57a8d7420a1",
+                                "display": "OT",
+                                "itemValue": "OT"
+                            },
+                            "operator": "eq"
+                        },
+                        {
+                            "type": "primitive",
+                            "field": "modbusOrigin",
+                            "value": "Scan",
+                            "operator": "eq",
+                            "_operator": "eq"
+                        }
+                    ]
+                },
+                "triggerOnReplicate": false
+            },
+            "status": null,
+            "top": "30",
+            "left": "125",
+            "stepType": "\/api\/3\/workflow_step_types\/ea155646-3821-4542-9702-b246da430a8d",
+            "group": null,
+            "uuid": "25c64d43-ed48-4f82-8c25-d713e8a2ff08"
+        }
+    ],
+    "routes": [
+        {
+            "@type": "WorkflowRoute",
+            "name": "Start -> Create Alert",
+            "targetStep": "\/api\/3\/workflow_steps\/bc5f7a04-acfa-44ce-bdd5-e4e863650a73",
+            "sourceStep": "\/api\/3\/workflow_steps\/25c64d43-ed48-4f82-8c25-d713e8a2ff08",
+            "label": null,
+            "isExecuted": false,
+            "group": null,
+            "uuid": "751eede5-ff27-4737-8a50-64c667c3e98e"
+        }
+    ],
+    "groups": [],
+    "priority": "\/api\/3\/picklists\/2b563c61-ae2c-41c0-a85a-c9709585e3f2",
+    "playbookOrigin": "\/api\/3\/picklists\/b6d710a9-a8ec-41ec-8817-fe9fa062fcdd",
+    "isEditable": false,
+    "uuid": "3ea071c6-c45c-40de-8743-19f50887f6c7",
+    "owners": [],
+    "isPrivate": false,
+    "deletedAt": null,
+    "recordTags": [
+        "modbus",
+        "modbus-discovery"
+    ]
+}
