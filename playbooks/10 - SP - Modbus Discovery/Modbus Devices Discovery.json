@@ -1,0 +1,369 @@
+{
+    "@type": "Workflow",
+    "triggerLimit": null,
+    "name": "Modbus Devices Discovery",
+    "aliasName": null,
+    "tag": null,
+    "description": "This Playbook scan yor network to identify IP answering some specific ports (Modbus), and scan for modbus_id discovery",
+    "isActive": false,
+    "debug": true,
+    "singleRecordExecution": false,
+    "remoteExecutableFlag": false,
+    "parameters": [],
+    "synchronous": false,
+    "collection": "\/api\/3\/workflow_collections\/0222ccc7-2129-40c7-ad68-da62759de47e",
+    "versions": [],
+    "triggerStep": "\/api\/3\/workflow_steps\/e44a9c57-840e-40c9-bbaf-94ea97975ae7",
+    "steps": [
+        {
+            "@type": "WorkflowStep",
+            "name": "Configuration",
+            "description": null,
+            "arguments": {
+                "endId": "10",
+                "IPrange": "172.18.20.5-40",
+                "startId": "1",
+                "timeout": "2",
+                "modbus_port": "502-504",
+                "useMockOutput": "false",
+                "modbus_address": "0"
+            },
+            "status": null,
+            "top": "140",
+            "left": "600",
+            "stepType": "\/api\/3\/workflow_step_types\/04d0cf46-b6a8-42c4-8683-60a7eaa69e8f",
+            "group": null,
+            "uuid": "591cd843-98d3-4e0c-aa9f-6a7ebe987ba4"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Consolidate scans",
+            "description": null,
+            "arguments": {
+                "_dummy1": "{% for host in vars.hosts%}\n        {% if host.data.count > 0 %}\n\n{% for unitId in host.data.activeUnits %}\n{% set _ = vars.device_list.append({\"ip\":host.data.ip,\"port\":host.data.port,\"unitId\":unitId}) %}\n    {% endfor %}\n        {% endif %}\n\n{% endfor %}",
+                "_dummy2": "{% for host in vars.gateways%}\n        {% if host.data.count > 0 %}\n\n{% for unitId in host.data.activeUnits %}\n{% set _ = vars.device_list.append({\"ip\":host.data.ip,\"port\":host.data.port,\"unitId\":unitId}) %}\n    {% endfor %}\n        {% endif %}\n\n{% endfor %}"
+            },
+            "status": null,
+            "top": "860",
+            "left": "600",
+            "stepType": "\/api\/3\/workflow_step_types\/04d0cf46-b6a8-42c4-8683-60a7eaa69e8f",
+            "group": null,
+            "uuid": "b2c76757-35da-48b3-8f17-532258086898"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Create or Update Assets",
+            "description": null,
+            "arguments": {
+                "for_each": {
+                    "item": "{{vars.device_list}}",
+                    "parallel": false,
+                    "condition": ""
+                },
+                "arguments": {
+                    "assetDetails": "{{vars.item}}"
+                },
+                "apply_async": false,
+                "step_variables": [],
+                "pass_parent_env": false,
+                "pass_input_record": false,
+                "workflowReference": "\/api\/3\/workflows\/d9571810-2bab-4a20-b4fb-9d79d59d528b"
+            },
+            "status": null,
+            "top": "980",
+            "left": "600",
+            "stepType": "\/api\/3\/workflow_step_types\/74932bdc-b8b6-4d24-88c4-1a4dfbc524f3",
+            "group": null,
+            "uuid": "f5971a4b-22cb-4371-8776-572bb281778f"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Init",
+            "description": null,
+            "arguments": {
+                "hosts": "[]",
+                "gateways": "[]",
+                "device_list": "[]",
+                "nmap_extract": "[]"
+            },
+            "status": null,
+            "top": "260",
+            "left": "600",
+            "stepType": "\/api\/3\/workflow_step_types\/04d0cf46-b6a8-42c4-8683-60a7eaa69e8f",
+            "group": null,
+            "uuid": "490a4dba-a6a6-4fe1-9d89-070eb0ab6479"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Modbus Scan Gateway",
+            "description": null,
+            "arguments": {
+                "name": "modbus",
+                "config": "7433ee69-ec0b-4f28-9439-5973cd85632e",
+                "params": {
+                    "host": "{{vars.item.ip}}",
+                    "port": "{{vars.item.port}}",
+                    "endId": "{{vars.endId}}",
+                    "startId": "{{vars.startId}}",
+                    "timeout": "{{vars.timeout}}",
+                    "scan_type": "Gateway",
+                    "testAddress": "{{vars.modbus_address}}"
+                },
+                "version": "1.0.0",
+                "for_each": {
+                    "item": "{{vars.nmap_extract}}",
+                    "__bulk": false,
+                    "parallel": true,
+                    "condition": ""
+                },
+                "connector": "modbus",
+                "operation": "scan_units",
+                "mock_result": "[\n    {\n      \"data\": {\n        \"ip\": \"172.18.20.10\",\n        \"port\": 502,\n        \"count\": 0,\n        \"status\": \"success\",\n        \"activeUnits\": [],\n        \"scannedRange\": \"1-10\"\n      },\n      \"status\": \"Success\",\n      \"_status\": true,\n      \"message\": \"\",\n      \"operation\": null,\n      \"request_id\": 342\n    },\n    {\n      \"data\": {\n        \"ip\": \"172.18.20.20\",\n        \"port\": 502,\n        \"count\": 3,\n        \"status\": \"success\",\n        \"activeUnits\": [\n          7,\n          8,\n          9\n        ],\n        \"scannedRange\": \"1-10\"\n      },\n      \"status\": \"Success\",\n      \"_status\": true,\n      \"message\": \"\",\n      \"operation\": null,\n      \"request_id\": 341\n    },\n    {\n      \"data\": {\n        \"ip\": \"172.18.20.22\",\n        \"port\": 502,\n        \"count\": 1,\n        \"status\": \"success\",\n        \"activeUnits\": [\n          1\n        ],\n        \"scannedRange\": \"1-10\"\n      },\n      \"status\": \"Success\",\n      \"_status\": true,\n      \"message\": \"\",\n      \"operation\": null,\n      \"request_id\": 343\n    },\n    {\n      \"data\": {\n        \"ip\": \"172.18.20.21\",\n        \"port\": 502,\n        \"count\": 1,\n        \"status\": \"success\",\n        \"activeUnits\": [\n          2\n        ],\n        \"scannedRange\": \"1-10\"\n      },\n      \"status\": \"Success\",\n      \"_status\": true,\n      \"message\": \"\",\n      \"operation\": null,\n      \"request_id\": 340\n    },\n    {\n      \"data\": {\n        \"ip\": \"172.18.20.30\",\n        \"port\": 502,\n        \"count\": 3,\n        \"status\": \"success\",\n        \"activeUnits\": [\n          1,\n          2,\n          3\n        ],\n        \"scannedRange\": \"1-10\"\n      },\n      \"status\": \"Success\",\n      \"_status\": true,\n      \"message\": \"\",\n      \"operation\": null,\n      \"request_id\": 339\n    }\n  ]",
+                "operationTitle": "Scan for Units",
+                "pickFromTenant": false,
+                "step_variables": {
+                    "gateways": "{{vars.steps.Modbus_Scan_Gateway}}"
+                }
+            },
+            "status": null,
+            "top": "620",
+            "left": "600",
+            "stepType": "\/api\/3\/workflow_step_types\/0bfed618-0316-11e7-93ae-92361f002671",
+            "group": null,
+            "uuid": "75a12fe3-1b0f-4052-9d36-9a9390bc70b7"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Modbus Scan Host",
+            "description": null,
+            "arguments": {
+                "name": "modbus",
+                "config": "7433ee69-ec0b-4f28-9439-5973cd85632e",
+                "params": {
+                    "host": "{{vars.item.ip}}",
+                    "port": "{{vars.item.port}}",
+                    "endId": 255,
+                    "unitId": "255",
+                    "startId": 255,
+                    "timeout": "{{vars.timeout}}",
+                    "scan_type": "Host",
+                    "testAddress": "{{vars.modbus_address}}"
+                },
+                "version": "1.0.0",
+                "for_each": {
+                    "item": "{{vars.nmap_extract}}",
+                    "__bulk": false,
+                    "parallel": true,
+                    "condition": ""
+                },
+                "connector": "modbus",
+                "operation": "scan_units",
+                "mock_result": "[\n    {\n      \"data\": {\n        \"ip\": \"172.18.20.21\",\n        \"port\": 502,\n        \"count\": 1,\n        \"status\": \"success\",\n        \"activeUnits\": [\n          255\n        ],\n        \"scannedRange\": \"255-255\"\n      },\n      \"status\": \"Success\",\n      \"_status\": true,\n      \"message\": \"\",\n      \"operation\": null,\n      \"request_id\": 348\n    },\n    {\n      \"data\": {\n        \"ip\": \"172.18.20.20\",\n        \"port\": 502,\n        \"count\": 1,\n        \"status\": \"success\",\n        \"activeUnits\": [\n          255\n        ],\n        \"scannedRange\": \"255-255\"\n      },\n      \"status\": \"Success\",\n      \"_status\": true,\n      \"message\": \"\",\n      \"operation\": null,\n      \"request_id\": 344\n    },\n    {\n      \"data\": {\n        \"ip\": \"172.18.20.22\",\n        \"port\": 502,\n        \"count\": 1,\n        \"status\": \"success\",\n        \"activeUnits\": [\n          255\n        ],\n        \"scannedRange\": \"255-255\"\n      },\n      \"status\": \"Success\",\n      \"_status\": true,\n      \"message\": \"\",\n      \"operation\": null,\n      \"request_id\": 346\n    },\n    {\n      \"data\": {\n        \"ip\": \"172.18.20.10\",\n        \"port\": 502,\n        \"count\": 1,\n        \"status\": \"success\",\n        \"activeUnits\": [\n          255\n        ],\n        \"scannedRange\": \"255-255\"\n      },\n      \"status\": \"Success\",\n      \"_status\": true,\n      \"message\": \"\",\n      \"operation\": null,\n      \"request_id\": 345\n    },\n    {\n      \"data\": {\n        \"ip\": \"172.18.20.30\",\n        \"port\": 502,\n        \"count\": 1,\n        \"status\": \"success\",\n        \"activeUnits\": [\n          255\n        ],\n        \"scannedRange\": \"255-255\"\n      },\n      \"status\": \"Success\",\n      \"_status\": true,\n      \"message\": \"\",\n      \"operation\": null,\n      \"request_id\": 347\n    }\n  ]",
+                "operationTitle": "Scan for Units",
+                "pickFromTenant": false,
+                "step_variables": {
+                    "hosts": "{{vars.steps.Modbus_Scan_Host}}"
+                }
+            },
+            "status": null,
+            "top": "740",
+            "left": "600",
+            "stepType": "\/api\/3\/workflow_step_types\/0bfed618-0316-11e7-93ae-92361f002671",
+            "group": null,
+            "uuid": "ec3d4e05-f9ea-40f3-9bde-af20a0fdb8b9"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Network discover",
+            "description": null,
+            "arguments": {
+                "name": "NMAP Scanner",
+                "config": "aeba712a-a6b1-45ce-a336-d0f95350c45e",
+                "params": {
+                    "args": "",
+                    "port": "{{vars.modbus_port}}",
+                    "hostname": "{{vars.IPrange}}"
+                },
+                "version": "1.0.1",
+                "connector": "nmap-scanner",
+                "operation": "scan_network",
+                "mock_result": "{\n  \"data\": {\n    \"nmap\": {\n      \"scaninfo\": {\n        \"tcp\": {\n          \"method\": \"connect\",\n          \"services\": \"501-504\"\n        }\n      },\n      \"scanstats\": {\n        \"elapsed\": \"4.17\",\n        \"timestr\": \"Wed Oct  7 11:04:23 2026\",\n        \"uphosts\": \"8\",\n        \"downhosts\": \"248\",\n        \"totalhosts\": \"256\"\n      },\n      \"command_line\": \"nmap -oX - -p 501-504 172.18.20.1\/24\"\n    },\n    \"scan\": {\n      \"172.18.20.1\": {\n        \"tcp\": {\n          \"501\": {\n            \"cpe\": \"\",\n            \"conf\": \"3\",\n            \"name\": \"stmf\",\n            \"state\": \"closed\",\n            \"reason\": \"conn-refused\",\n            \"product\": \"\",\n            \"version\": \"\",\n            \"extrainfo\": \"\"\n          },\n          \"502\": {\n            \"cpe\": \"\",\n            \"conf\": \"3\",\n            \"name\": \"mbap\",\n            \"state\": \"closed\",\n            \"reason\": \"conn-refused\",\n            \"product\": \"\",\n            \"version\": \"\",\n            \"extrainfo\": \"\"\n          },\n          \"503\": {\n            \"cpe\": \"\",\n            \"conf\": \"3\",\n            \"name\": \"intrinsa\",\n            \"state\": \"closed\",\n            \"reason\": \"conn-refused\",\n            \"product\": \"\",\n            \"version\": \"\",\n            \"extrainfo\": \"\"\n          },\n          \"504\": {\n            \"cpe\": \"\",\n            \"conf\": \"3\",\n            \"name\": \"citadel\",\n            \"state\": \"closed\",\n            \"reason\": \"conn-refused\",\n            \"product\": \"\",\n            \"version\": \"\",\n            \"extrainfo\": \"\"\n          }\n        },\n        \"status\": {\n          \"state\": \"up\",\n          \"reason\": \"conn-refused\"\n        },\n        \"vendor\": [],\n        \"addresses\": {\n          \"ipv4\": \"172.18.20.1\"\n        },\n        \"hostnames\": [\n          {\n            \"name\": \"\",\n            \"type\": \"\"\n          }\n        ]\n      },\n      \"172.18.20.2\": {\n        \"tcp\": {\n          \"501\": {\n            \"cpe\": \"\",\n            \"conf\": \"3\",\n            \"name\": \"stmf\",\n            \"state\": \"closed\",\n            \"reason\": \"conn-refused\",\n            \"product\": \"\",\n            \"version\": \"\",\n            \"extrainfo\": \"\"\n          },\n          \"502\": {\n            \"cpe\": \"\",\n            \"conf\": \"3\",\n            \"name\": \"mbap\",\n            \"state\": \"closed\",\n            \"reason\": \"conn-refused\",\n            \"product\": \"\",\n            \"version\": \"\",\n            \"extrainfo\": \"\"\n          },\n          \"503\": {\n            \"cpe\": \"\",\n            \"conf\": \"3\",\n            \"name\": \"intrinsa\",\n            \"state\": \"closed\",\n            \"reason\": \"conn-refused\",\n            \"product\": \"\",\n            \"version\": \"\",\n            \"extrainfo\": \"\"\n          },\n          \"504\": {\n            \"cpe\": \"\",\n            \"conf\": \"3\",\n            \"name\": \"citadel\",\n            \"state\": \"closed\",\n            \"reason\": \"conn-refused\",\n            \"product\": \"\",\n            \"version\": \"\",\n            \"extrainfo\": \"\"\n          }\n        },\n        \"status\": {\n          \"state\": \"up\",\n          \"reason\": \"conn-refused\"\n        },\n        \"vendor\": [],\n        \"addresses\": {\n          \"ipv4\": \"172.18.20.2\"\n        },\n        \"hostnames\": [\n          {\n            \"name\": \"\",\n            \"type\": \"\"\n          }\n        ]\n      },\n      \"172.18.20.3\": {\n        \"tcp\": {\n          \"501\": {\n            \"cpe\": \"\",\n            \"conf\": \"3\",\n            \"name\": \"stmf\",\n            \"state\": \"closed\",\n            \"reason\": \"conn-refused\",\n            \"product\": \"\",\n            \"version\": \"\",\n            \"extrainfo\": \"\"\n          },\n          \"502\": {\n            \"cpe\": \"\",\n            \"conf\": \"3\",\n            \"name\": \"mbap\",\n            \"state\": \"closed\",\n            \"reason\": \"conn-refused\",\n            \"product\": \"\",\n            \"version\": \"\",\n            \"extrainfo\": \"\"\n          },\n          \"503\": {\n            \"cpe\": \"\",\n            \"conf\": \"3\",\n            \"name\": \"intrinsa\",\n            \"state\": \"closed\",\n            \"reason\": \"conn-refused\",\n            \"product\": \"\",\n            \"version\": \"\",\n            \"extrainfo\": \"\"\n          },\n          \"504\": {\n            \"cpe\": \"\",\n            \"conf\": \"3\",\n            \"name\": \"citadel\",\n            \"state\": \"closed\",\n            \"reason\": \"conn-refused\",\n            \"product\": \"\",\n            \"version\": \"\",\n            \"extrainfo\": \"\"\n          }\n        },\n        \"status\": {\n          \"state\": \"up\",\n          \"reason\": \"conn-refused\"\n        },\n        \"vendor\": [],\n        \"addresses\": {\n          \"ipv4\": \"172.18.20.3\"\n        },\n        \"hostnames\": [\n          {\n            \"name\": \"\",\n            \"type\": \"\"\n          }\n        ]\n      },\n      \"172.18.20.10\": {\n        \"tcp\": {\n          \"501\": {\n            \"cpe\": \"\",\n            \"conf\": \"3\",\n            \"name\": \"stmf\",\n            \"state\": \"filtered\",\n            \"reason\": \"no-response\",\n            \"product\": \"\",\n            \"version\": \"\",\n            \"extrainfo\": \"\"\n          },\n          \"502\": {\n            \"cpe\": \"\",\n            \"conf\": \"3\",\n            \"name\": \"mbap\",\n            \"state\": \"open\",\n            \"reason\": \"syn-ack\",\n            \"product\": \"\",\n            \"version\": \"\",\n            \"extrainfo\": \"\"\n          },\n          \"503\": {\n            \"cpe\": \"\",\n            \"conf\": \"3\",\n            \"name\": \"intrinsa\",\n            \"state\": \"filtered\",\n            \"reason\": \"no-response\",\n            \"product\": \"\",\n            \"version\": \"\",\n            \"extrainfo\": \"\"\n          },\n          \"504\": {\n            \"cpe\": \"\",\n            \"conf\": \"3\",\n            \"name\": \"citadel\",\n            \"state\": \"filtered\",\n            \"reason\": \"no-response\",\n            \"product\": \"\",\n            \"version\": \"\",\n            \"extrainfo\": \"\"\n          }\n        },\n        \"status\": {\n          \"state\": \"up\",\n          \"reason\": \"syn-ack\"\n        },\n        \"vendor\": [],\n        \"addresses\": {\n          \"ipv4\": \"172.18.20.10\"\n        },\n        \"hostnames\": [\n          {\n            \"name\": \"\",\n            \"type\": \"\"\n          }\n        ]\n      },\n      \"172.18.20.20\": {\n        \"tcp\": {\n          \"501\": {\n            \"cpe\": \"\",\n            \"conf\": \"3\",\n            \"name\": \"stmf\",\n            \"state\": \"filtered\",\n            \"reason\": \"no-response\",\n            \"product\": \"\",\n            \"version\": \"\",\n            \"extrainfo\": \"\"\n          },\n          \"502\": {\n            \"cpe\": \"\",\n            \"conf\": \"3\",\n            \"name\": \"mbap\",\n            \"state\": \"open\",\n            \"reason\": \"syn-ack\",\n            \"product\": \"\",\n            \"version\": \"\",\n            \"extrainfo\": \"\"\n          },\n          \"503\": {\n            \"cpe\": \"\",\n            \"conf\": \"3\",\n            \"name\": \"intrinsa\",\n            \"state\": \"filtered\",\n            \"reason\": \"no-response\",\n            \"product\": \"\",\n            \"version\": \"\",\n            \"extrainfo\": \"\"\n          },\n          \"504\": {\n            \"cpe\": \"\",\n            \"conf\": \"3\",\n            \"name\": \"citadel\",\n            \"state\": \"filtered\",\n            \"reason\": \"no-response\",\n            \"product\": \"\",\n            \"version\": \"\",\n            \"extrainfo\": \"\"\n          }\n        },\n        \"status\": {\n          \"state\": \"up\",\n          \"reason\": \"syn-ack\"\n        },\n        \"vendor\": [],\n        \"addresses\": {\n          \"ipv4\": \"172.18.20.20\"\n        },\n        \"hostnames\": [\n          {\n            \"name\": \"\",\n            \"type\": \"\"\n          }\n        ]\n      },\n      \"172.18.20.21\": {\n        \"tcp\": {\n          \"501\": {\n            \"cpe\": \"\",\n            \"conf\": \"3\",\n            \"name\": \"stmf\",\n            \"state\": \"closed\",\n            \"reason\": \"conn-refused\",\n            \"product\": \"\",\n            \"version\": \"\",\n            \"extrainfo\": \"\"\n          },\n          \"502\": {\n            \"cpe\": \"\",\n            \"conf\": \"3\",\n            \"name\": \"mbap\",\n            \"state\": \"open\",\n            \"reason\": \"syn-ack\",\n            \"product\": \"\",\n            \"version\": \"\",\n            \"extrainfo\": \"\"\n          },\n          \"503\": {\n            \"cpe\": \"\",\n            \"conf\": \"3\",\n            \"name\": \"intrinsa\",\n            \"state\": \"closed\",\n            \"reason\": \"conn-refused\",\n            \"product\": \"\",\n            \"version\": \"\",\n            \"extrainfo\": \"\"\n          },\n          \"504\": {\n            \"cpe\": \"\",\n            \"conf\": \"3\",\n            \"name\": \"citadel\",\n            \"state\": \"closed\",\n            \"reason\": \"conn-refused\",\n            \"product\": \"\",\n            \"version\": \"\",\n            \"extrainfo\": \"\"\n          }\n        },\n        \"status\": {\n          \"state\": \"up\",\n          \"reason\": \"syn-ack\"\n        },\n        \"vendor\": [],\n        \"addresses\": {\n          \"ipv4\": \"172.18.20.21\"\n        },\n        \"hostnames\": [\n          {\n            \"name\": \"\",\n            \"type\": \"\"\n          }\n        ]\n      },\n      \"172.18.20.22\": {\n        \"tcp\": {\n          \"501\": {\n            \"cpe\": \"\",\n            \"conf\": \"3\",\n            \"name\": \"stmf\",\n            \"state\": \"closed\",\n            \"reason\": \"conn-refused\",\n            \"product\": \"\",\n            \"version\": \"\",\n            \"extrainfo\": \"\"\n          },\n          \"502\": {\n            \"cpe\": \"\",\n            \"conf\": \"3\",\n            \"name\": \"mbap\",\n            \"state\": \"open\",\n            \"reason\": \"syn-ack\",\n            \"product\": \"\",\n            \"version\": \"\",\n            \"extrainfo\": \"\"\n          },\n          \"503\": {\n            \"cpe\": \"\",\n            \"conf\": \"3\",\n            \"name\": \"intrinsa\",\n            \"state\": \"closed\",\n            \"reason\": \"conn-refused\",\n            \"product\": \"\",\n            \"version\": \"\",\n            \"extrainfo\": \"\"\n          },\n          \"504\": {\n            \"cpe\": \"\",\n            \"conf\": \"3\",\n            \"name\": \"citadel\",\n            \"state\": \"closed\",\n            \"reason\": \"conn-refused\",\n            \"product\": \"\",\n            \"version\": \"\",\n            \"extrainfo\": \"\"\n          }\n        },\n        \"status\": {\n          \"state\": \"up\",\n          \"reason\": \"conn-refused\"\n        },\n        \"vendor\": [],\n        \"addresses\": {\n          \"ipv4\": \"172.18.20.22\"\n        },\n        \"hostnames\": [\n          {\n            \"name\": \"\",\n            \"type\": \"\"\n          }\n        ]\n      },\n      \"172.18.20.30\": {\n        \"tcp\": {\n          \"501\": {\n            \"cpe\": \"\",\n            \"conf\": \"3\",\n            \"name\": \"stmf\",\n            \"state\": \"filtered\",\n            \"reason\": \"no-response\",\n            \"product\": \"\",\n            \"version\": \"\",\n            \"extrainfo\": \"\"\n          },\n          \"502\": {\n            \"cpe\": \"\",\n            \"conf\": \"3\",\n            \"name\": \"mbap\",\n            \"state\": \"open\",\n            \"reason\": \"syn-ack\",\n            \"product\": \"\",\n            \"version\": \"\",\n            \"extrainfo\": \"\"\n          },\n          \"503\": {\n            \"cpe\": \"\",\n            \"conf\": \"3\",\n            \"name\": \"intrinsa\",\n            \"state\": \"filtered\",\n            \"reason\": \"no-response\",\n            \"product\": \"\",\n            \"version\": \"\",\n            \"extrainfo\": \"\"\n          },\n          \"504\": {\n            \"cpe\": \"\",\n            \"conf\": \"3\",\n            \"name\": \"citadel\",\n            \"state\": \"filtered\",\n            \"reason\": \"no-response\",\n            \"product\": \"\",\n            \"version\": \"\",\n            \"extrainfo\": \"\"\n          }\n        },\n        \"status\": {\n          \"state\": \"up\",\n          \"reason\": \"syn-ack\"\n        },\n        \"vendor\": [],\n        \"addresses\": {\n          \"ipv4\": \"172.18.20.30\"\n        },\n        \"hostnames\": [\n          {\n            \"name\": \"\",\n            \"type\": \"\"\n          }\n        ]\n      }\n    }\n  },\n  \"status\": \"Success\",\n  \"_status\": true,\n  \"message\": \"\",\n  \"operation\": null,\n  \"request_id\": 338,\n  \"execution_time\": \"4 seconds 108 ms\"\n}",
+                "operationTitle": "Scan Network",
+                "pickFromTenant": false,
+                "step_variables": {
+                    "nmap": "{{vars.steps.Network_discover.data}}"
+                }
+            },
+            "status": null,
+            "top": "380",
+            "left": "600",
+            "stepType": "\/api\/3\/workflow_step_types\/0bfed618-0316-11e7-93ae-92361f002671",
+            "group": null,
+            "uuid": "f2c37e1e-f207-4f8a-b25c-e168ab0076de"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Refine result",
+            "description": null,
+            "arguments": {
+                "_dummy": "{% for ip, host in vars.nmap.scan.items() %}{% for port, info in host.tcp.items() %}        {% if info.state == \"open\" %}{% set _ = vars.nmap_extract.append({\"ip\":ip,\"port\":port}) %}{% endif %}{% endfor %}{% endfor %}"
+            },
+            "status": null,
+            "top": "500",
+            "left": "600",
+            "stepType": "\/api\/3\/workflow_step_types\/04d0cf46-b6a8-42c4-8683-60a7eaa69e8f",
+            "group": null,
+            "uuid": "72c1380b-ed34-4287-bf02-0635f0268728"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Start",
+            "description": null,
+            "arguments": {
+                "__triggerLimit": true,
+                "step_variables": {
+                    "input": {
+                        "params": []
+                    }
+                },
+                "triggerOnSource": true,
+                "triggerOnReplicate": false
+            },
+            "status": null,
+            "top": "20",
+            "left": "600",
+            "stepType": "\/api\/3\/workflow_step_types\/b348f017-9a94-471f-87f8-ce88b6a7ad62",
+            "group": null,
+            "uuid": "e44a9c57-840e-40c9-bbaf-94ea97975ae7"
+        }
+    ],
+    "routes": [
+        {
+            "@type": "WorkflowRoute",
+            "name": "Configuration -> Copy of Configuration",
+            "targetStep": "\/api\/3\/workflow_steps\/490a4dba-a6a6-4fe1-9d89-070eb0ab6479",
+            "sourceStep": "\/api\/3\/workflow_steps\/591cd843-98d3-4e0c-aa9f-6a7ebe987ba4",
+            "label": null,
+            "isExecuted": false,
+            "group": null,
+            "uuid": "e597efdf-269c-4b74-bdd0-b497c3ecaafe"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Consolidate scans -> Create",
+            "targetStep": "\/api\/3\/workflow_steps\/f5971a4b-22cb-4371-8776-572bb281778f",
+            "sourceStep": "\/api\/3\/workflow_steps\/b2c76757-35da-48b3-8f17-532258086898",
+            "label": null,
+            "isExecuted": false,
+            "group": null,
+            "uuid": "e6607e4c-ab46-42c7-9912-bc2a888719b9"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Copy of Configuration -> Network discover",
+            "targetStep": "\/api\/3\/workflow_steps\/f2c37e1e-f207-4f8a-b25c-e168ab0076de",
+            "sourceStep": "\/api\/3\/workflow_steps\/490a4dba-a6a6-4fe1-9d89-070eb0ab6479",
+            "label": null,
+            "isExecuted": false,
+            "group": null,
+            "uuid": "625a5dbc-a4c4-489c-ad42-602e9fc7a9e0"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Modbus Scan Gateway -> Modbus Scan Host",
+            "targetStep": "\/api\/3\/workflow_steps\/ec3d4e05-f9ea-40f3-9bde-af20a0fdb8b9",
+            "sourceStep": "\/api\/3\/workflow_steps\/75a12fe3-1b0f-4052-9d36-9a9390bc70b7",
+            "label": null,
+            "isExecuted": false,
+            "group": null,
+            "uuid": "e4391e86-a62b-468d-9bcd-9c137bfc31ab"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Modbus Scan Host -> Consolidate",
+            "targetStep": "\/api\/3\/workflow_steps\/b2c76757-35da-48b3-8f17-532258086898",
+            "sourceStep": "\/api\/3\/workflow_steps\/ec3d4e05-f9ea-40f3-9bde-af20a0fdb8b9",
+            "label": null,
+            "isExecuted": false,
+            "group": null,
+            "uuid": "31f5742d-2789-4cbf-8d8b-4e79a5e4db44"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Network discover -> sss",
+            "targetStep": "\/api\/3\/workflow_steps\/72c1380b-ed34-4287-bf02-0635f0268728",
+            "sourceStep": "\/api\/3\/workflow_steps\/f2c37e1e-f207-4f8a-b25c-e168ab0076de",
+            "label": null,
+            "isExecuted": false,
+            "group": null,
+            "uuid": "e2831807-8681-4151-902f-823d5cfb39af"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Refine result -> Modbus Scan Gateway",
+            "targetStep": "\/api\/3\/workflow_steps\/75a12fe3-1b0f-4052-9d36-9a9390bc70b7",
+            "sourceStep": "\/api\/3\/workflow_steps\/72c1380b-ed34-4287-bf02-0635f0268728",
+            "label": null,
+            "isExecuted": false,
+            "group": null,
+            "uuid": "5bdf6d43-f23d-45fd-96e7-340f94cf6417"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Start -> Configuration",
+            "targetStep": "\/api\/3\/workflow_steps\/591cd843-98d3-4e0c-aa9f-6a7ebe987ba4",
+            "sourceStep": "\/api\/3\/workflow_steps\/e44a9c57-840e-40c9-bbaf-94ea97975ae7",
+            "label": null,
+            "isExecuted": false,
+            "group": null,
+            "uuid": "df5717be-b97b-476a-9305-fdda46f4369d"
+        }
+    ],
+    "groups": [
+        {
+            "@type": "WorkflowGroup",
+            "name": "Configuration",
+            "description": "Edit the Configuration to modify:\n- IPrange (Range or unique IP)\n- modbus_port (Range or unique port)\n- startId\/EndId (address_ID of the modbus devices to scan)\n- timeout (time to wait for the modbus answer)\n- modbus_address (Registry address used for the modbus scan)",
+            "type": "note",
+            "isCollapsed": false,
+            "hasTriggerStep": false,
+            "hideInLogs": true,
+            "metadata": [],
+            "reusable": false,
+            "top": "80",
+            "left": "920",
+            "height": "178",
+            "width": "434",
+            "uuid": "4e5fdee3-ca9b-4134-a16d-182805bbe920",
+            "recordTags": []
+        },
+        {
+            "@type": "WorkflowGroup",
+            "name": "Modbus Scan Host",
+            "description": "The Playbook scans the unit_id=255",
+            "type": "note",
+            "isCollapsed": false,
+            "hasTriggerStep": false,
+            "hideInLogs": true,
+            "metadata": [],
+            "reusable": false,
+            "top": "740",
+            "left": "960",
+            "height": "0",
+            "width": "300",
+            "uuid": "cdfce81c-d930-48e5-bc24-5d0f6ce40496",
+            "recordTags": []
+        }
+    ],
+    "priority": "\/api\/3\/picklists\/2b563c61-ae2c-41c0-a85a-c9709585e3f2",
+    "playbookOrigin": "\/api\/3\/picklists\/b6d710a9-a8ec-41ec-8817-fe9fa062fcdd",
+    "isEditable": false,
+    "uuid": "7ccdfa07-91b7-41e2-b49a-927da4f2d8cd",
+    "owners": [],
+    "isPrivate": false,
+    "deletedAt": null,
+    "recordTags": [
+        "modbus",
+        "modbus-discovery"
+    ]
+}

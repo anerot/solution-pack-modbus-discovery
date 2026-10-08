@@ -1,0 +1,234 @@
+{
+    "@type": "Workflow",
+    "triggerLimit": null,
+    "name": "Get modbus Device Information",
+    "aliasName": null,
+    "tag": null,
+    "description": "This Playbook retrieves the Device Infomation based on the 0x2B\/0x0E modbus function",
+    "isActive": false,
+    "debug": true,
+    "singleRecordExecution": false,
+    "remoteExecutableFlag": false,
+    "parameters": [],
+    "synchronous": false,
+    "collection": "\/api\/3\/workflow_collections\/0222ccc7-2129-40c7-ad68-da62759de47e",
+    "versions": [],
+    "triggerStep": "\/api\/3\/workflow_steps\/6cc55452-40b1-4c20-8976-0a5451cae8d2",
+    "steps": [
+        {
+            "@type": "WorkflowStep",
+            "name": "Configuration",
+            "description": null,
+            "arguments": {
+                "useMockOutput": "false"
+            },
+            "status": null,
+            "top": "165",
+            "left": "125",
+            "stepType": "\/api\/3\/workflow_step_types\/04d0cf46-b6a8-42c4-8683-60a7eaa69e8f",
+            "group": null,
+            "uuid": "6235a2d7-1d79-46d8-9075-9911c8f786ad"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Extract Informations",
+            "description": null,
+            "arguments": {
+                "device_sn": "",
+                "device_name": "{{vars.steps.Read_Device_Information.data.information['6']}}",
+                "device_model": "{{vars.steps.Read_Device_Information.data.information['1']}}",
+                "device_firmware": "{{vars.steps.Read_Device_Information.data.information['2']}}",
+                "device_manufacturer": "{{vars.steps.Read_Device_Information.data.information['0']}}"
+            },
+            "status": null,
+            "top": "435",
+            "left": "125",
+            "stepType": "\/api\/3\/workflow_step_types\/04d0cf46-b6a8-42c4-8683-60a7eaa69e8f",
+            "group": null,
+            "uuid": "1d7002ba-e50e-4150-a990-26e71f8efe15"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Read Device Information",
+            "description": null,
+            "arguments": {
+                "name": "modbus",
+                "config": "7433ee69-ec0b-4f28-9439-5973cd85632e",
+                "params": {
+                    "host": "{{vars.input.records[0].ip}}",
+                    "port": "{{vars.input.records[0].modbusTCPPort}}",
+                    "unitId": "{{vars.input.records[0].modbusUnitID}}",
+                    "objectId": 0,
+                    "readCode": 3
+                },
+                "version": "1.0.0",
+                "connector": "modbus",
+                "operation": "read_device_information",
+                "mock_result": "{\n  \"data\": {\n    \"status\": \"success\",\n    \"unitId\": 255,\n    \"objectId\": 0,\n    \"readCode\": 3,\n    \"information\": {\n      \"0\": \"Schneider Electric\",\n      \"1\": \"PAS600L\",\n      \"2\": \"002.006.001\",\n      \"3\": \"https:\/\/www.se.com\/\",\n      \"4\": \"EcoStruxure Panel Server\",\n      \"5\": \"Universal 24VDC\",\n      \"6\": \"EcoStruxure Panel Server\"\n    }\n  },\n  \"status\": \"Success\",\n  \"message\": \"\",\n  \"operation\": null,\n  \"execution_time\": \"119 ms\"\n}",
+                "operationTitle": "Read Device Information",
+                "pickFromTenant": false,
+                "step_variables": []
+            },
+            "status": null,
+            "top": "300",
+            "left": "125",
+            "stepType": "\/api\/3\/workflow_step_types\/0bfed618-0316-11e7-93ae-92361f002671",
+            "group": null,
+            "uuid": "57189fb5-f339-4366-96c7-0f556c3b36e8"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Start",
+            "description": null,
+            "arguments": {
+                "route": "4ac6e703-f260-41d7-9ad9-39ed38d326c0",
+                "resources": [
+                    "assets"
+                ],
+                "__triggerLimit": true,
+                "inputVariables": [],
+                "step_variables": {
+                    "input": {
+                        "params": [],
+                        "records": "{{vars.input.records}}"
+                    }
+                },
+                "triggerOnSource": true,
+                "displayConditions": {
+                    "assets": {
+                        "sort": [],
+                        "limit": 30,
+                        "logic": "AND",
+                        "filters": [
+                            {
+                                "type": "object",
+                                "field": "assetType",
+                                "value": "\/api\/3\/picklists\/f36137a5-aa8f-4532-aab5-e57a8d7420a1",
+                                "_value": {
+                                    "@id": "\/api\/3\/picklists\/f36137a5-aa8f-4532-aab5-e57a8d7420a1",
+                                    "display": "OT",
+                                    "itemValue": "OT"
+                                },
+                                "operator": "eq"
+                            },
+                            {
+                                "type": "primitive",
+                                "field": "modbusTCPPort",
+                                "value": 1,
+                                "operator": "gte",
+                                "_operator": "gte"
+                            },
+                            {
+                                "type": "primitive",
+                                "field": "modbusUnitID",
+                                "value": 1,
+                                "operator": "gte",
+                                "_operator": "gte"
+                            }
+                        ]
+                    }
+                },
+                "executeButtonText": "Execute",
+                "noRecordExecution": false,
+                "showToasterMessage": {
+                    "visible": false,
+                    "messageVisible": true
+                },
+                "triggerOnReplicate": false,
+                "singleRecordExecution": true
+            },
+            "status": null,
+            "top": "30",
+            "left": "125",
+            "stepType": "\/api\/3\/workflow_step_types\/f414d039-bb0d-4e59-9c39-a8f1e880b18a",
+            "group": null,
+            "uuid": "6cc55452-40b1-4c20-8976-0a5451cae8d2"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Update Asset Details",
+            "description": null,
+            "arguments": {
+                "resource": {
+                    "vendor": "{{vars.device_manufacturer}}",
+                    "product": "{{vars.device_model}}",
+                    "firmware": "{{vars.device_firmware}}",
+                    "hostname": "{{vars.device_name}}",
+                    "modbusSN": "{{vars.device_sn}}",
+                    "modbusModel": "{{vars.device_model}}",
+                    "serialNumber": "{{vars.device_sn}}",
+                    "modbusManufacturer": "{{vars.device_manufacturer}}"
+                },
+                "operation": "Append",
+                "collection": "{{vars.input.records[0]['@id']}}",
+                "__recommend": [],
+                "collectionType": "\/api\/3\/assets",
+                "fieldOperation": {
+                    "protocol": "Append",
+                    "recordTags": "Append"
+                },
+                "step_variables": []
+            },
+            "status": null,
+            "top": "570",
+            "left": "125",
+            "stepType": "\/api\/3\/workflow_step_types\/b593663d-7d13-40ce-a3a3-96dece928722",
+            "group": null,
+            "uuid": "77f88a65-1466-4f3d-933b-8a1c484f85d0"
+        }
+    ],
+    "routes": [
+        {
+            "@type": "WorkflowRoute",
+            "name": "Configuration -> Read Device Information",
+            "targetStep": "\/api\/3\/workflow_steps\/57189fb5-f339-4366-96c7-0f556c3b36e8",
+            "sourceStep": "\/api\/3\/workflow_steps\/6235a2d7-1d79-46d8-9075-9911c8f786ad",
+            "label": null,
+            "isExecuted": false,
+            "group": null,
+            "uuid": "ed408c29-b0df-4aba-8577-8e0796cf9885"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Extract Informations -> Update Asset Details",
+            "targetStep": "\/api\/3\/workflow_steps\/77f88a65-1466-4f3d-933b-8a1c484f85d0",
+            "sourceStep": "\/api\/3\/workflow_steps\/1d7002ba-e50e-4150-a990-26e71f8efe15",
+            "label": null,
+            "isExecuted": false,
+            "group": null,
+            "uuid": "85703549-630f-4fc3-8ced-c2b804c064c7"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Read Device Information -> Extract Informations",
+            "targetStep": "\/api\/3\/workflow_steps\/1d7002ba-e50e-4150-a990-26e71f8efe15",
+            "sourceStep": "\/api\/3\/workflow_steps\/57189fb5-f339-4366-96c7-0f556c3b36e8",
+            "label": null,
+            "isExecuted": false,
+            "group": null,
+            "uuid": "74a5e93a-99bf-46b7-9914-e952f8796126"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Start -> Configuration",
+            "targetStep": "\/api\/3\/workflow_steps\/6235a2d7-1d79-46d8-9075-9911c8f786ad",
+            "sourceStep": "\/api\/3\/workflow_steps\/6cc55452-40b1-4c20-8976-0a5451cae8d2",
+            "label": null,
+            "isExecuted": false,
+            "group": null,
+            "uuid": "7e810bf9-689d-4537-8bb9-d8ff841db814"
+        }
+    ],
+    "groups": [],
+    "priority": "\/api\/3\/picklists\/2b563c61-ae2c-41c0-a85a-c9709585e3f2",
+    "playbookOrigin": "\/api\/3\/picklists\/b6d710a9-a8ec-41ec-8817-fe9fa062fcdd",
+    "isEditable": false,
+    "uuid": "17d785c6-3d80-42a1-8375-dd4e0a6bb04c",
+    "owners": [],
+    "isPrivate": false,
+    "deletedAt": null,
+    "recordTags": [
+        "modbus",
+        "modbus-discovery"
+    ]
+}

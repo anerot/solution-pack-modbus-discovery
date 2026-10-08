@@ -1,0 +1,11 @@
+{
+    "@context": "\/api\/3\/contexts\/WorkflowCollection",
+    "@type": "WorkflowCollection",
+    "name": "10 - SP - Modbus Discovery",
+    "description": null,
+    "visible": true,
+    "image": null,
+    "uuid": "0222ccc7-2129-40c7-ad68-da62759de47e",
+    "deletedAt": null,
+    "recordTags": []
+}

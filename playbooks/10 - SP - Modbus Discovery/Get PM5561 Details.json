@@ -1,0 +1,512 @@
+{
+    "@type": "Workflow",
+    "triggerLimit": null,
+    "name": "Get PM5561 Details",
+    "aliasName": null,
+    "tag": null,
+    "description": "This Playbook retrieves the PM5561 details",
+    "isActive": false,
+    "debug": true,
+    "singleRecordExecution": false,
+    "remoteExecutableFlag": false,
+    "parameters": [],
+    "synchronous": false,
+    "collection": "\/api\/3\/workflow_collections\/0222ccc7-2129-40c7-ad68-da62759de47e",
+    "versions": [],
+    "triggerStep": "\/api\/3\/workflow_steps\/3b1686ff-daee-41f7-92db-95d58e63146c",
+    "steps": [
+        {
+            "@type": "WorkflowStep",
+            "name": "Configuration",
+            "description": null,
+            "arguments": {
+                "useMockOutput": "false"
+            },
+            "status": null,
+            "top": "120",
+            "left": "560",
+            "stepType": "\/api\/3\/workflow_step_types\/04d0cf46-b6a8-42c4-8683-60a7eaa69e8f",
+            "group": null,
+            "uuid": "c6cab724-4ac4-4ac1-a889-d1b7f037eae0"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Convert int SN",
+            "description": null,
+            "arguments": {
+                "name": "modbus",
+                "config": "7433ee69-ec0b-4f28-9439-5973cd85632e",
+                "params": {
+                    "registers": "{{vars.steps.Read_Model_SN.data.registers}}"
+                },
+                "version": "1.0.0",
+                "connector": "modbus",
+                "operation": "convert_to_int32",
+                "mock_result": "{\n  \"data\": {\n    \"value\": 608007785,\n    \"status\": \"success\"\n  },\n  \"status\": \"Success\",\n  \"message\": \"\",\n  \"operation\": null,\n  \"execution_time\": \"43 ms\"\n}",
+                "operationTitle": "Convert to int32",
+                "pickFromTenant": false,
+                "step_variables": {
+                    "device_sn": "{{vars.steps.Convert_int_SN.data.value}}"
+                }
+            },
+            "status": null,
+            "top": "480",
+            "left": "560",
+            "stepType": "\/api\/3\/workflow_step_types\/0bfed618-0316-11e7-93ae-92361f002671",
+            "group": null,
+            "uuid": "3ed0af1d-2011-485d-a7fa-855fa33a69b0"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Convert String Manufacturer",
+            "description": null,
+            "arguments": {
+                "name": "modbus",
+                "config": "7433ee69-ec0b-4f28-9439-5973cd85632e",
+                "params": {
+                    "registers": "{{vars.steps.Read_Manufacturer.data.registers}}"
+                },
+                "version": "1.0.0",
+                "connector": "modbus",
+                "operation": "convert_to_string",
+                "mock_result": "{\n  \"data\": {\n    \"value\": \"Schneider Electric\",\n    \"status\": \"success\",\n    \"registers\": [\n      21347,\n      26734,\n      25961,\n      25701,\n      29216,\n      17772,\n      25955,\n      29810,\n      26979,\n      0,\n      0,\n      0,\n      0,\n      0,\n      0,\n      0,\n      0,\n      0,\n      0,\n      0\n    ]\n  },\n  \"status\": \"Success\",\n  \"message\": \"\",\n  \"operation\": null,\n  \"execution_time\": \"43 ms\"\n}",
+                "operationTitle": "Convert to string",
+                "pickFromTenant": false,
+                "step_variables": {
+                    "device_manufacturer": "{{vars.steps.Convert_String_Manufacturer.data.value}}"
+                }
+            },
+            "status": null,
+            "top": "240",
+            "left": "560",
+            "stepType": "\/api\/3\/workflow_step_types\/0bfed618-0316-11e7-93ae-92361f002671",
+            "group": null,
+            "uuid": "0c3f4092-41e4-4df6-96d1-5ce9b5c88714"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Convert String Model",
+            "description": null,
+            "arguments": {
+                "name": "modbus",
+                "config": "7433ee69-ec0b-4f28-9439-5973cd85632e",
+                "params": {
+                    "registers": "{{vars.steps.Read_Model.data.registers}}"
+                },
+                "version": "1.0.0",
+                "connector": "modbus",
+                "operation": "convert_to_string",
+                "mock_result": "{\n  \"data\": {\n    \"value\": \"PM5561\",\n    \"status\": \"success\",\n    \"registers\": [\n      20557,\n      13621,\n      13873,\n      0,\n      0,\n      0,\n      0,\n      0,\n      0,\n      0,\n      0,\n      0,\n      0,\n      0,\n      0,\n      0,\n      0,\n      0,\n      0,\n      0\n    ]\n  },\n  \"status\": \"Success\",\n  \"message\": \"\",\n  \"operation\": null,\n  \"execution_time\": \"44 ms\"\n}",
+                "operationTitle": "Convert to string",
+                "pickFromTenant": false,
+                "step_variables": {
+                    "device_model": "{{vars.steps.Convert_String_Model.data.value}}"
+                }
+            },
+            "status": null,
+            "top": "360",
+            "left": "560",
+            "stepType": "\/api\/3\/workflow_step_types\/0bfed618-0316-11e7-93ae-92361f002671",
+            "group": null,
+            "uuid": "2e06a143-17fa-4ca0-82ee-1684205c85cf"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Convert String Name",
+            "description": null,
+            "arguments": {
+                "name": "modbus",
+                "config": "7433ee69-ec0b-4f28-9439-5973cd85632e",
+                "params": {
+                    "registers": "{{vars.steps.Read_Name.data.registers}}"
+                },
+                "version": "1.0.0",
+                "connector": "modbus",
+                "operation": "convert_to_string",
+                "mock_result": "{\n  \"data\": {\n    \"value\": \"Power Meter\",\n    \"status\": \"success\",\n    \"registers\": [\n      20591,\n      30565,\n      29216,\n      19813,\n      29797,\n      29184,\n      0,\n      0,\n      0,\n      0,\n      0,\n      0,\n      0,\n      0,\n      0,\n      0,\n      0,\n      0,\n      0,\n      0\n    ]\n  },\n  \"status\": \"Success\",\n  \"message\": \"\",\n  \"operation\": null,\n  \"execution_time\": \"47 ms\"\n}",
+                "operationTitle": "Convert to string",
+                "pickFromTenant": false,
+                "step_variables": {
+                    "device_name": "{{vars.steps.Convert_String_Name.data.value}}"
+                }
+            },
+            "status": null,
+            "top": "600",
+            "left": "560",
+            "stepType": "\/api\/3\/workflow_step_types\/0bfed618-0316-11e7-93ae-92361f002671",
+            "group": null,
+            "uuid": "f6770bee-b818-4648-9121-275ecd935771"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Read Firmware version",
+            "description": null,
+            "arguments": {
+                "name": "modbus",
+                "config": "7433ee69-ec0b-4f28-9439-5973cd85632e",
+                "params": {
+                    "host": "{{vars.input.records[0].ip}}",
+                    "port": "{{vars.input.records[0].modbusTCPPort}}",
+                    "unitId": "{{vars.input.records[0].modbusUnitID}}",
+                    "address": 1637,
+                    "registerCount": 3
+                },
+                "version": "1.0.0",
+                "connector": "modbus",
+                "operation": "readholding",
+                "mock_result": "{\n  \"data\": {\n    \"status\": \"success\",\n    \"unitId\": 7,\n    \"address\": 1637,\n    \"registers\": [\n      10,\n      6,\n      4\n    ]\n  },\n  \"status\": \"Success\",\n  \"message\": \"\",\n  \"operation\": null,\n  \"execution_time\": \"163 ms\"\n}",
+                "operationTitle": "Read Holding Register",
+                "pickFromTenant": false,
+                "step_variables": {
+                    "device_firmware": "{{vars.steps.Read_Firmware_version.data.registers[0]}}.{{vars.steps.Read_Firmware_version.data.registers[1]}}.{{vars.steps.Read_Firmware_version.data.registers[2]}}"
+                }
+            },
+            "status": null,
+            "top": "660",
+            "left": "120",
+            "stepType": "\/api\/3\/workflow_step_types\/0bfed618-0316-11e7-93ae-92361f002671",
+            "group": null,
+            "uuid": "88a01b3c-58be-48f1-bb74-567d13882554"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Read Manufacturer",
+            "description": null,
+            "arguments": {
+                "name": "modbus",
+                "config": "7433ee69-ec0b-4f28-9439-5973cd85632e",
+                "params": {
+                    "host": "{{vars.input.records[0].ip}}",
+                    "port": "{{vars.input.records[0].modbusTCPPort}}",
+                    "unitId": "{{vars.input.records[0].modbusUnitID}}",
+                    "address": 69,
+                    "registerCount": 20
+                },
+                "version": "1.0.0",
+                "connector": "modbus",
+                "operation": "readholding",
+                "mock_result": "{\n  \"data\": {\n    \"status\": \"success\",\n    \"unitId\": 7,\n    \"address\": 69,\n    \"registers\": [\n      21347,\n      26734,\n      25961,\n      25701,\n      29216,\n      17772,\n      25955,\n      29810,\n      26979,\n      0,\n      0,\n      0,\n      0,\n      0,\n      0,\n      0,\n      0,\n      0,\n      0,\n      0\n    ]\n  },\n  \"status\": \"Success\",\n  \"message\": \"\",\n  \"operation\": null,\n  \"execution_time\": \"182 ms\"\n}",
+                "operationTitle": "Read Holding Register",
+                "pickFromTenant": false,
+                "step_variables": []
+            },
+            "status": null,
+            "top": "180",
+            "left": "120",
+            "stepType": "\/api\/3\/workflow_step_types\/0bfed618-0316-11e7-93ae-92361f002671",
+            "group": null,
+            "uuid": "510d52bb-88b9-4d29-b292-4b1542c016af"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Read Model",
+            "description": null,
+            "arguments": {
+                "name": "modbus",
+                "config": "7433ee69-ec0b-4f28-9439-5973cd85632e",
+                "params": {
+                    "host": "{{vars.input.records[0].ip}}",
+                    "port": "{{vars.input.records[0].modbusTCPPort}}",
+                    "unitId": "{{vars.input.records[0].modbusUnitID}}",
+                    "address": 49,
+                    "registerCount": 20
+                },
+                "version": "1.0.0",
+                "connector": "modbus",
+                "operation": "readholding",
+                "mock_result": "{\n  \"data\": {\n    \"status\": \"success\",\n    \"unitId\": 7,\n    \"address\": 49,\n    \"registers\": [\n      20557,\n      13621,\n      13873,\n      0,\n      0,\n      0,\n      0,\n      0,\n      0,\n      0,\n      0,\n      0,\n      0,\n      0,\n      0,\n      0,\n      0,\n      0,\n      0,\n      0\n    ]\n  },\n  \"status\": \"Success\",\n  \"message\": \"\",\n  \"operation\": null,\n  \"execution_time\": \"228 ms\"\n}",
+                "operationTitle": "Read Holding Register",
+                "pickFromTenant": false,
+                "step_variables": []
+            },
+            "status": null,
+            "top": "300",
+            "left": "120",
+            "stepType": "\/api\/3\/workflow_step_types\/0bfed618-0316-11e7-93ae-92361f002671",
+            "group": null,
+            "uuid": "d1b0987a-532b-44f1-9e8f-9ceb9c5b7538"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Read Model SN",
+            "description": null,
+            "arguments": {
+                "name": "modbus",
+                "config": "7433ee69-ec0b-4f28-9439-5973cd85632e",
+                "params": {
+                    "host": "{{vars.input.records[0].ip}}",
+                    "port": "{{vars.input.records[0].modbusTCPPort}}",
+                    "unitId": "{{vars.input.records[0].modbusUnitID}}",
+                    "address": 129,
+                    "registerCount": 2
+                },
+                "version": "1.0.0",
+                "connector": "modbus",
+                "operation": "readholding",
+                "mock_result": "{\n  \"data\": {\n    \"status\": \"success\",\n    \"unitId\": 7,\n    \"address\": 129,\n    \"registers\": [\n      9277,\n      30313\n    ]\n  },\n  \"status\": \"Success\",\n  \"message\": \"\",\n  \"operation\": null,\n  \"execution_time\": \"172 ms\"\n}",
+                "operationTitle": "Read Holding Register",
+                "pickFromTenant": false,
+                "step_variables": []
+            },
+            "status": null,
+            "top": "420",
+            "left": "120",
+            "stepType": "\/api\/3\/workflow_step_types\/0bfed618-0316-11e7-93ae-92361f002671",
+            "group": null,
+            "uuid": "6a1e683b-75db-4a2c-b264-8b83674a7a9c"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Read Name",
+            "description": null,
+            "arguments": {
+                "name": "modbus",
+                "config": "7433ee69-ec0b-4f28-9439-5973cd85632e",
+                "params": {
+                    "host": "{{vars.input.records[0].ip}}",
+                    "port": "{{vars.input.records[0].modbusTCPPort}}",
+                    "unitId": "{{vars.input.records[0].modbusUnitID}}",
+                    "address": 29,
+                    "registerCount": 20
+                },
+                "version": "1.0.0",
+                "connector": "modbus",
+                "operation": "readholding",
+                "mock_result": "{\n  \"data\": {\n    \"status\": \"success\",\n    \"unitId\": 7,\n    \"address\": 29,\n    \"registers\": [\n      20591,\n      30565,\n      29216,\n      19813,\n      29797,\n      29184,\n      0,\n      0,\n      0,\n      0,\n      0,\n      0,\n      0,\n      0,\n      0,\n      0,\n      0,\n      0,\n      0,\n      0\n    ]\n  },\n  \"status\": \"Success\",\n  \"message\": \"\",\n  \"operation\": null,\n  \"execution_time\": \"174 ms\"\n}",
+                "operationTitle": "Read Holding Register",
+                "pickFromTenant": false,
+                "step_variables": []
+            },
+            "status": null,
+            "top": "540",
+            "left": "120",
+            "stepType": "\/api\/3\/workflow_step_types\/0bfed618-0316-11e7-93ae-92361f002671",
+            "group": null,
+            "uuid": "0f3bd821-361c-450e-b658-b164633a7573"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Start",
+            "description": null,
+            "arguments": {
+                "route": "2ce70988-09fb-4043-a683-d22b61a2376b",
+                "resources": [
+                    "assets"
+                ],
+                "__triggerLimit": true,
+                "inputVariables": [],
+                "step_variables": {
+                    "input": {
+                        "params": [],
+                        "records": "{{vars.input.records}}"
+                    }
+                },
+                "triggerOnSource": true,
+                "displayConditions": {
+                    "assets": {
+                        "sort": [],
+                        "limit": 30,
+                        "logic": "AND",
+                        "filters": [
+                            {
+                                "type": "object",
+                                "field": "assetType",
+                                "value": "\/api\/3\/picklists\/f36137a5-aa8f-4532-aab5-e57a8d7420a1",
+                                "_value": {
+                                    "@id": "\/api\/3\/picklists\/f36137a5-aa8f-4532-aab5-e57a8d7420a1",
+                                    "display": "OT",
+                                    "itemValue": "OT"
+                                },
+                                "operator": "eq"
+                            },
+                            {
+                                "type": "primitive",
+                                "field": "modbusTCPPort",
+                                "value": 1,
+                                "operator": "gte",
+                                "_operator": "gte"
+                            },
+                            {
+                                "type": "primitive",
+                                "field": "modbusUnitID",
+                                "value": 1,
+                                "operator": "gte",
+                                "_operator": "gte"
+                            }
+                        ]
+                    }
+                },
+                "executeButtonText": "Execute",
+                "noRecordExecution": false,
+                "showToasterMessage": {
+                    "visible": false,
+                    "messageVisible": true
+                },
+                "triggerOnReplicate": false,
+                "singleRecordExecution": true
+            },
+            "status": null,
+            "top": "60",
+            "left": "120",
+            "stepType": "\/api\/3\/workflow_step_types\/f414d039-bb0d-4e59-9c39-a8f1e880b18a",
+            "group": null,
+            "uuid": "3b1686ff-daee-41f7-92db-95d58e63146c"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Update Asset Details",
+            "description": null,
+            "arguments": {
+                "resource": {
+                    "vendor": "{{vars.device_manufacturer}}",
+                    "product": "{{vars.device_model}}",
+                    "firmware": "{{vars.device_firmware}}",
+                    "hostname": "{{vars.device_name}}",
+                    "modbusSN": "{{vars.device_sn}}",
+                    "modbusModel": "{{vars.device_model}}",
+                    "serialNumber": "{{vars.device_sn}}",
+                    "modbusManufacturer": "{{vars.device_manufacturer}}"
+                },
+                "operation": "Append",
+                "collection": "{{vars.input.records[0]['@id']}}",
+                "__recommend": [],
+                "collectionType": "\/api\/3\/assets",
+                "fieldOperation": {
+                    "protocol": "Append",
+                    "recordTags": "Append"
+                },
+                "step_variables": []
+            },
+            "status": null,
+            "top": "720",
+            "left": "560",
+            "stepType": "\/api\/3\/workflow_step_types\/b593663d-7d13-40ce-a3a3-96dece928722",
+            "group": null,
+            "uuid": "a840c67d-4896-4709-9779-df17fa3ae2a9"
+        }
+    ],
+    "routes": [
+        {
+            "@type": "WorkflowRoute",
+            "name": "Configuration -> Read Manufacturer",
+            "targetStep": "\/api\/3\/workflow_steps\/510d52bb-88b9-4d29-b292-4b1542c016af",
+            "sourceStep": "\/api\/3\/workflow_steps\/c6cab724-4ac4-4ac1-a889-d1b7f037eae0",
+            "label": null,
+            "isExecuted": false,
+            "group": null,
+            "uuid": "3db34ef1-a607-4d74-a291-ab249fdd4f25"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Convert int SN -> Read Name",
+            "targetStep": "\/api\/3\/workflow_steps\/0f3bd821-361c-450e-b658-b164633a7573",
+            "sourceStep": "\/api\/3\/workflow_steps\/3ed0af1d-2011-485d-a7fa-855fa33a69b0",
+            "label": null,
+            "isExecuted": false,
+            "group": null,
+            "uuid": "b81beb01-1653-4a04-93a2-03def7529e4e"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Convert String Model -> Copy of Read Model",
+            "targetStep": "\/api\/3\/workflow_steps\/6a1e683b-75db-4a2c-b264-8b83674a7a9c",
+            "sourceStep": "\/api\/3\/workflow_steps\/2e06a143-17fa-4ca0-82ee-1684205c85cf",
+            "label": null,
+            "isExecuted": false,
+            "group": null,
+            "uuid": "bc98f01f-a2ac-4eb5-a94f-263354233513"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Convert String -> Read Model",
+            "targetStep": "\/api\/3\/workflow_steps\/d1b0987a-532b-44f1-9e8f-9ceb9c5b7538",
+            "sourceStep": "\/api\/3\/workflow_steps\/0c3f4092-41e4-4df6-96d1-5ce9b5c88714",
+            "label": null,
+            "isExecuted": false,
+            "group": null,
+            "uuid": "544668c7-0a8f-4a97-b8d1-7ad5d79211a5"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Copy of Convert int SN -> Read Firmware version",
+            "targetStep": "\/api\/3\/workflow_steps\/88a01b3c-58be-48f1-bb74-567d13882554",
+            "sourceStep": "\/api\/3\/workflow_steps\/f6770bee-b818-4648-9121-275ecd935771",
+            "label": null,
+            "isExecuted": false,
+            "group": null,
+            "uuid": "28e0069e-3e7d-4808-a834-aa451b64f59c"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Read Firmware version -> Update Asset Details",
+            "targetStep": "\/api\/3\/workflow_steps\/a840c67d-4896-4709-9779-df17fa3ae2a9",
+            "sourceStep": "\/api\/3\/workflow_steps\/88a01b3c-58be-48f1-bb74-567d13882554",
+            "label": null,
+            "isExecuted": false,
+            "group": null,
+            "uuid": "0bde85ed-0de6-4c36-a6cf-d14efdcf3a2f"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Read Manufacturer -> rr",
+            "targetStep": "\/api\/3\/workflow_steps\/0c3f4092-41e4-4df6-96d1-5ce9b5c88714",
+            "sourceStep": "\/api\/3\/workflow_steps\/510d52bb-88b9-4d29-b292-4b1542c016af",
+            "label": null,
+            "isExecuted": false,
+            "group": null,
+            "uuid": "fe70f3f2-f339-49ef-8cef-697dbe16849b"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Read Model -> Copy of Convert String",
+            "targetStep": "\/api\/3\/workflow_steps\/2e06a143-17fa-4ca0-82ee-1684205c85cf",
+            "sourceStep": "\/api\/3\/workflow_steps\/d1b0987a-532b-44f1-9e8f-9ceb9c5b7538",
+            "label": null,
+            "isExecuted": false,
+            "group": null,
+            "uuid": "a89cb6e3-190e-489c-820c-23eb51d8ab5b"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Read Model SN -> Convert int SN",
+            "targetStep": "\/api\/3\/workflow_steps\/3ed0af1d-2011-485d-a7fa-855fa33a69b0",
+            "sourceStep": "\/api\/3\/workflow_steps\/6a1e683b-75db-4a2c-b264-8b83674a7a9c",
+            "label": null,
+            "isExecuted": false,
+            "group": null,
+            "uuid": "24dd4588-eaee-4f8d-8dec-267a159b7a63"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Read Name -> Copy of Convert int SN",
+            "targetStep": "\/api\/3\/workflow_steps\/f6770bee-b818-4648-9121-275ecd935771",
+            "sourceStep": "\/api\/3\/workflow_steps\/0f3bd821-361c-450e-b658-b164633a7573",
+            "label": null,
+            "isExecuted": false,
+            "group": null,
+            "uuid": "4c0c3767-d229-4228-b4a0-cd1a1295e9cb"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Start -> Configuration",
+            "targetStep": "\/api\/3\/workflow_steps\/c6cab724-4ac4-4ac1-a889-d1b7f037eae0",
+            "sourceStep": "\/api\/3\/workflow_steps\/3b1686ff-daee-41f7-92db-95d58e63146c",
+            "label": null,
+            "isExecuted": false,
+            "group": null,
+            "uuid": "dcc733bb-9c63-4209-89a5-2e3b42da38dc"
+        }
+    ],
+    "groups": [],
+    "priority": "\/api\/3\/picklists\/2b563c61-ae2c-41c0-a85a-c9709585e3f2",
+    "playbookOrigin": "\/api\/3\/picklists\/b6d710a9-a8ec-41ec-8817-fe9fa062fcdd",
+    "isEditable": false,
+    "uuid": "1ec9249c-e225-4745-9a8d-eab73d210c74",
+    "owners": [],
+    "isPrivate": false,
+    "deletedAt": null,
+    "recordTags": [
+        "modbus",
+        "modbus-discovery"
+    ]
+}
