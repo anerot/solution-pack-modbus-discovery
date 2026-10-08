@@ -1,0 +1,341 @@
+{
+    "descriptions": {
+        "plural": "Assets",
+        "singular": "Asset"
+    },
+    "type": "assets",
+    "attributes": [
+        {
+            "@type": "AttributeMetadata",
+            "type": "string",
+            "name": "modbusOrigin",
+            "length": null,
+            "formType": "text",
+            "dataSource": null,
+            "searchable": false,
+            "peerReplicable": true,
+            "system": false,
+            "encrypted": false,
+            "gridColumn": false,
+            "collection": false,
+            "inversedField": null,
+            "ownsRelationship": false,
+            "validation": {
+                "required": [
+                    {
+                        "sort": [],
+                        "limit": 30,
+                        "logic": "AND",
+                        "filters": [
+                            {
+                                "field": "assetType",
+                                "operator": "eq",
+                                "value": "\/api\/3\/picklists\/f36137a5-aa8f-4532-aab5-e57a8d7420a1",
+                                "_value": {
+                                    "display": "OT",
+                                    "itemValue": "OT",
+                                    "@id": "\/api\/3\/picklists\/f36137a5-aa8f-4532-aab5-e57a8d7420a1"
+                                },
+                                "type": "object"
+                            }
+                        ]
+                    }
+                ],
+                "minlength": 0,
+                "maxlength": 10485761,
+                "_enableRange": false
+            },
+            "bulkAction": {
+                "allow": false,
+                "buttonText": "",
+                "buttonIcon": "",
+                "buttonClass": "btn btn-default btn-sm"
+            },
+            "dataSourceFilters": null,
+            "defaultValue": "User",
+            "tooltip": "Scan or User",
+            "visibility": [
+                {
+                    "sort": [],
+                    "limit": 30,
+                    "logic": "AND",
+                    "filters": [
+                        {
+                            "field": "assetType",
+                            "operator": "eq",
+                            "value": "\/api\/3\/picklists\/f36137a5-aa8f-4532-aab5-e57a8d7420a1",
+                            "_value": {
+                                "display": "OT",
+                                "itemValue": "OT",
+                                "@id": "\/api\/3\/picklists\/f36137a5-aa8f-4532-aab5-e57a8d7420a1"
+                            },
+                            "type": "object"
+                        }
+                    ]
+                }
+            ],
+            "htmlEscape": false,
+            "orphanRemoval": null,
+            "readable": true,
+            "writeable": true,
+            "identifier": null,
+            "unique": false,
+            "recommend": false,
+            "skipSerialization": false,
+            "displayName": "{{ modbusOrigin }}",
+            "descriptions": {
+                "singular": "Modbus Origin"
+            }
+        },
+        {
+            "@type": "AttributeMetadata",
+            "type": "string",
+            "name": "modbusSN",
+            "length": null,
+            "formType": "text",
+            "dataSource": null,
+            "searchable": false,
+            "peerReplicable": true,
+            "system": false,
+            "encrypted": false,
+            "gridColumn": false,
+            "collection": false,
+            "inversedField": null,
+            "ownsRelationship": false,
+            "validation": {
+                "required": false,
+                "minlength": 0,
+                "maxlength": 10485761
+            },
+            "bulkAction": {
+                "allow": false,
+                "buttonText": "",
+                "buttonIcon": "",
+                "buttonClass": "btn btn-default btn-sm"
+            },
+            "dataSourceFilters": null,
+            "defaultValue": "",
+            "tooltip": null,
+            "visibility": [
+                {
+                    "sort": [],
+                    "limit": 30,
+                    "logic": "AND",
+                    "filters": [
+                        {
+                            "field": "assetType",
+                            "operator": "eq",
+                            "value": "\/api\/3\/picklists\/f36137a5-aa8f-4532-aab5-e57a8d7420a1",
+                            "_value": {
+                                "display": "OT",
+                                "itemValue": "OT",
+                                "@id": "\/api\/3\/picklists\/f36137a5-aa8f-4532-aab5-e57a8d7420a1"
+                            },
+                            "type": "object"
+                        }
+                    ]
+                }
+            ],
+            "htmlEscape": false,
+            "orphanRemoval": null,
+            "readable": true,
+            "writeable": true,
+            "identifier": null,
+            "unique": false,
+            "recommend": false,
+            "skipSerialization": false,
+            "displayName": "{{ modbusSN }}",
+            "descriptions": {
+                "singular": "Modbus SN"
+            }
+        },
+        {
+            "@type": "AttributeMetadata",
+            "type": "string",
+            "name": "modbusModel",
+            "length": null,
+            "formType": "text",
+            "dataSource": null,
+            "searchable": false,
+            "peerReplicable": true,
+            "system": false,
+            "encrypted": false,
+            "gridColumn": false,
+            "collection": false,
+            "inversedField": null,
+            "ownsRelationship": false,
+            "validation": {
+                "required": false,
+                "minlength": 0,
+                "maxlength": 10485761
+            },
+            "bulkAction": {
+                "allow": false,
+                "buttonText": "",
+                "buttonIcon": "",
+                "buttonClass": "btn btn-default btn-sm"
+            },
+            "dataSourceFilters": null,
+            "defaultValue": "",
+            "tooltip": null,
+            "visibility": [
+                {
+                    "sort": [],
+                    "limit": 30,
+                    "logic": "AND",
+                    "filters": [
+                        {
+                            "field": "assetType",
+                            "operator": "eq",
+                            "value": "\/api\/3\/picklists\/f36137a5-aa8f-4532-aab5-e57a8d7420a1",
+                            "_value": {
+                                "display": "OT",
+                                "itemValue": "OT",
+                                "@id": "\/api\/3\/picklists\/f36137a5-aa8f-4532-aab5-e57a8d7420a1"
+                            },
+                            "type": "object"
+                        }
+                    ]
+                }
+            ],
+            "htmlEscape": false,
+            "orphanRemoval": null,
+            "readable": true,
+            "writeable": true,
+            "identifier": null,
+            "unique": false,
+            "recommend": false,
+            "skipSerialization": false,
+            "displayName": "{{ modbusModel }}",
+            "descriptions": {
+                "singular": "Modbus Model"
+            }
+        },
+        {
+            "@type": "AttributeMetadata",
+            "type": "string",
+            "name": "modbusManufacturer",
+            "length": null,
+            "formType": "text",
+            "dataSource": null,
+            "searchable": false,
+            "peerReplicable": true,
+            "system": false,
+            "encrypted": false,
+            "gridColumn": false,
+            "collection": false,
+            "inversedField": null,
+            "ownsRelationship": false,
+            "validation": {
+                "required": false,
+                "minlength": 0,
+                "maxlength": 10485761
+            },
+            "bulkAction": {
+                "allow": false,
+                "buttonText": "",
+                "buttonIcon": "",
+                "buttonClass": "btn btn-default btn-sm"
+            },
+            "dataSourceFilters": null,
+            "defaultValue": "",
+            "tooltip": null,
+            "visibility": [
+                {
+                    "sort": [],
+                    "limit": 30,
+                    "logic": "AND",
+                    "filters": [
+                        {
+                            "field": "assetType",
+                            "operator": "eq",
+                            "value": "\/api\/3\/picklists\/f36137a5-aa8f-4532-aab5-e57a8d7420a1",
+                            "_value": {
+                                "display": "OT",
+                                "itemValue": "OT",
+                                "@id": "\/api\/3\/picklists\/f36137a5-aa8f-4532-aab5-e57a8d7420a1"
+                            },
+                            "type": "object"
+                        }
+                    ]
+                }
+            ],
+            "htmlEscape": false,
+            "orphanRemoval": null,
+            "readable": true,
+            "writeable": true,
+            "identifier": null,
+            "unique": false,
+            "recommend": false,
+            "skipSerialization": false,
+            "displayName": "{{ modbusManufacturer }}",
+            "descriptions": {
+                "singular": "Modbus Manufacturer"
+            }
+        },
+        {
+            "@type": "AttributeMetadata",
+            "type": "integer",
+            "name": "modbusTCPPort",
+            "length": null,
+            "formType": "integer",
+            "dataSource": null,
+            "searchable": true,
+            "peerReplicable": true,
+            "system": false,
+            "encrypted": false,
+            "gridColumn": false,
+            "collection": false,
+            "inversedField": null,
+            "ownsRelationship": false,
+            "validation": {
+                "required": false,
+                "minlength": 1,
+                "maxlength": 65535
+            },
+            "bulkAction": {
+                "allow": false,
+                "buttonText": "",
+                "buttonIcon": "",
+                "buttonClass": "btn btn-default btn-sm"
+            },
+            "dataSourceFilters": null,
+            "defaultValue": "502",
+            "tooltip": null,
+            "visibility": [
+                {
+                    "sort": [],
+                    "limit": 30,
+                    "logic": "AND",
+                    "filters": [
+                        {
+                            "field": "assetType",
+                            "operator": "eq",
+                            "value": "\/api\/3\/picklists\/f36137a5-aa8f-4532-aab5-e57a8d7420a1",
+                            "_value": {
+                                "display": "OT",
+                                "itemValue": "OT",
+                                "@id": "\/api\/3\/picklists\/f36137a5-aa8f-4532-aab5-e57a8d7420a1"
+                            },
+                            "type": "object"
+                        }
+                    ]
+                }
+            ],
+            "htmlEscape": false,
+            "orphanRemoval": null,
+            "readable": true,
+            "writeable": true,
+            "identifier": null,
+            "unique": false,
+            "recommend": false,
+            "skipSerialization": false,
+            "displayName": "{{ modbusTCPPort }}",
+            "descriptions": {
+                "singular": "Modbus TCP Port"
+            }
+        }
+    ],
+    "tableName": "assets",
+    "displayName": "{{ ip }} {{ hostname }}"
+}
